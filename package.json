@@ -9,7 +9,9 @@
     "test": "karma start build/karma.conf.js --single-run"
   },
   "dependencies": {
-    "vue": "^1.0.16"
+    "timekit-sdk": "timekit-io/js-sdk#new-bookings-endpoints",
+    "vue": "^1.0.16",
+    "vue-router": "vuejs/vue-router"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",
