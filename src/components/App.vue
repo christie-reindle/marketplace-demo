@@ -1,6 +1,20 @@
 <template>
   <div>
-    <h1>Yo I am App</h1>
-    <router-view></router-view>
+    <component :is="layout"></component>
   </div>
 </template>
+
+<script>
+import LayoutDefault from './layout/LayoutDefault'
+
+export default {
+  components: {
+    LayoutDefault
+  },
+  computed: {
+    layout: function () {
+      return 'layout-default'
+    }
+  }
+}
+</script>
