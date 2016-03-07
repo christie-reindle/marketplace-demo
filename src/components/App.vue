@@ -13,7 +13,9 @@ export default {
   },
   computed: {
     layout: function () {
-      return 'layout-default'
+      let layout = 'layout-default'
+      if (this.$route.layout) layout = 'layout-' + this.$route.layout
+      return layout
     }
   }
 }

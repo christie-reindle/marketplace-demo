@@ -1,21 +1,29 @@
 import Login from '../components/Login'
-import Overview from '../components/Overview'
+import Introduction from '../components/Introduction'
+import Search from '../components/Search'
 
 export default function (router) {
   router.map({
     '/login': {
       name: 'login',
       component: Login,
-      layout: 'isolated'
+      layout: 'default'
     },
 
-    '/overview': {
-      name: 'overview',
-      component: Overview
+    '/introduction': {
+      name: 'introduction',
+      component: Introduction,
+      layout: 'default'
+    },
+
+    '/search': {
+      name: 'search',
+      component: Search,
+      layout: 'default'
     }
   })
 
   router.redirect({
-    '*': 'overview'
+    '*': 'introduction'
   })
 }

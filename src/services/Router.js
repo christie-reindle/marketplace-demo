@@ -5,7 +5,7 @@ import App from '../components/App'
 export default function (Vue) {
   Vue.use(VueRouter)
   let router = new VueRouter({
-    linkActiveClass: 'activeLink'
+    linkActiveClass: 'is-active'
   })
 
   Routes(router)

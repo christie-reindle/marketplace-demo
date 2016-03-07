@@ -1,5 +1,5 @@
 <template>
   <div>
-    <h1>I am overview!</h1>
+    <h1>I am search ;)</h1>
   </div>
 </template>
