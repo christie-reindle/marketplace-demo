@@ -3,6 +3,10 @@ import Firebase from './Firebase'
 let Auth = (function () {
   var user = Firebase.getAuth()
 
+  Firebase.onAuth(function (authData) {
+    user = authData
+  })
+
   var Auth = {}
 
   Auth.isAuthenticated = function () {

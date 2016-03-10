@@ -64,7 +64,7 @@ export default {
       this.isAuthenticated = authData !== null
 
       if (this.isAuthenticated) {
-        let user = authData
+        let user = Auth.getUser()
 
         if (user.auth.provider === 'facebook') {
           this.user.name = user.facebook.displayName
