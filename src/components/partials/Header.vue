@@ -6,7 +6,7 @@
           <a href="#" class="header-item">
             <span class="icon">
               <i class="fa fa-child"></i>
-            </span> Rent My Thing
+            </span> Rent a space
           </a>
           <a v-link="'introduction'" class="header-tab">
             Introduction
