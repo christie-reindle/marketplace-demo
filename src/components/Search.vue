@@ -14,28 +14,68 @@
           <input type="text" class="input is-large" placeholder="Enter a location" id="location">
         </p>
         <p class="control">
-          <span class="select">
-            <select name="" id="">
-              <option value="">Within 1 km</option>
-              <option value="">Within 3 km</option>
-              <option value="">Within 5 km</option>
-              <option value="">Within 10 km</option>
-            </select>
-          </span>
+          Find places within
         </p>
-        Location: {{ location | json }}
+        <p class="control">
+          <label class="radio">
+            <input type="radio" name="radius">
+            1 km
+          </label>
+          <label class="radio">
+            <input type="radio" name="radius">
+            3 km
+          </label>
+          <label class="radio">
+            <input type="radio" name="radius">
+            5 km
+          </label>
+          <label class="radio">
+            <input type="radio" name="radius">
+            10 km
+          </label>
+        </p>
+        <p class="control">
+          <button class="button is-primary is-medium">
+            Search
+          </button>
+        </p>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <space-list
+          :spaces="spaces">
+        </space-list>
       </div>
     </section>
   </div>
 </template>
 
 <script>
+import SpaceList from './space/SpaceList'
 import GoogleMapsLoader from 'google-maps'
 
 export default {
+  components: {
+    SpaceList
+  },
   data () {
     return {
-      location: {}
+      location: {},
+      spaces: [
+        {
+          name: 'A space',
+          description: 'Wow, something awesome'
+        },
+        {
+          name: 'B space',
+          description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus, porro!'
+        },
+        {
+          name: 'C space',
+          description: 'Lorem ipsum dolor sit amet.'
+        }
+      ]
     }
   },
   ready: function () {
