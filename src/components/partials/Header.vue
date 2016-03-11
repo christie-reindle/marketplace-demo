@@ -14,6 +14,9 @@
           <a v-link="'search'" class="header-tab">
             Search
           </a>
+          <a v-link="'create_space'" class="header-tab">
+            Create space
+          </a>
         </div>
 
         <!-- Hamburger menu (on mobile) -->

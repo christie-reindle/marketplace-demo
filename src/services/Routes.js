@@ -1,6 +1,7 @@
 import Login from '../components/Login'
 import Introduction from '../components/Introduction'
 import Search from '../components/Search'
+import SpaceCreate from '../components/space/SpaceCreate'
 
 export default function (router) {
   router.map({
@@ -19,6 +20,12 @@ export default function (router) {
     '/search': {
       name: 'search',
       component: Search,
+      layout: 'default'
+    },
+
+    '/create_space': {
+      name: 'create_space',
+      component: SpaceCreate,
       layout: 'default'
     }
   })
