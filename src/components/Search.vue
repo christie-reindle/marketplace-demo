@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section class="hero is-success is-bold is-medium is-left">
+    <section class="hero is-info is-bold is-medium is-left">
       <div class="hero-content">
         <div class="container">
           <h1 class="title is-2">Search for a space</h1>
@@ -11,7 +11,9 @@
     <section class="section">
       <div class="container">
         <p class="control">
-          <input type="text" class="input is-large" placeholder="Enter a location" id="location">
+          <location-input :id="'location'">
+            <input type="text" class="input is-medium" id="location" placeholder="Enter a location">
+          </location-input>
         </p>
         <p class="control">
           Find places within
@@ -52,12 +54,13 @@
 </template>
 
 <script>
+import LocationInput from './partials/LocationInput'
 import SpaceList from './space/SpaceList'
-import GoogleMapsLoader from 'google-maps'
 
 export default {
   components: {
-    SpaceList
+    SpaceList,
+    LocationInput
   },
   data () {
     return {
@@ -77,23 +80,6 @@ export default {
         }
       ]
     }
-  },
-  ready: function () {
-    GoogleMapsLoader.LIBRARIES = ['places']
-    GoogleMapsLoader.load(google => {
-      let input = document.getElementById('location')
-      let autocomplete = new google.maps.places.Autocomplete(input)
-
-      google.maps.event.addListener(autocomplete, 'place_changed', () => {
-        let place = autocomplete.getPlace()
-        let location = {
-          lat: place.geometry.location.lat(),
-          lng: place.geometry.location.lng()
-        }
-
-        this.location = location
-      })
-    })
   }
 }
 </script>
