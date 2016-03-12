@@ -6,7 +6,11 @@ import GoogleMapsLoader from 'google-maps'
 
 export default {
   props: {
-    location: Object,
+    location: {
+      lat: '',
+      lng: '',
+      address: ''
+    },
     id: String
   },
   ready: function () {
@@ -17,7 +21,9 @@ export default {
 
       google.maps.event.addListener(autocomplete, 'place_changed', () => {
         let place = autocomplete.getPlace()
+
         let location = {
+          address: place.formatted_address,
           lat: place.geometry.location.lat(),
           lng: place.geometry.location.lng()
         }

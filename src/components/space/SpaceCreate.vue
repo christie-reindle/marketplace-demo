@@ -10,70 +10,16 @@
     </section>
     <section class="section">
       <div class="container">
-        <div class="columns">
-          <div class="column is-4">
-            <div class="content">
-              <h2 class="title is-4">
-                About your place
-              </h2>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate totam, saepe ipsum libero possimus expedita quibusdam ullam asperiores eum temporibus.
-              </p>
-            </div>
-          </div>
-          <div class="column">
-            <p class="control">
-              <label class="label">
-                Name
-              </label>
-              <input type="text" class="input" placeholder="You place's name">
-            </p>
-            <p class="control">
-              <label class="label">
-                Description
-              </label>
-              <input type="text" class="input" placeholder="A few words about your space">
-            </p>
-            <p class="control">
-              <label class="label">
-                Location
-              </label>
-              <location-input :location.sync="location" :id="'location'">
-                <input type="text" class="input" id="location" placeholder="Enter a location">
-              </location-input>
-            </p>
-          </div>
-        </div>
-        <div class="columns">
-          <div class="column is-4">
-            <div class="content">
-              <h2 class="title is-4">
-                Availability
-              </h2>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos, nobis.
-              </p>
-            </div>
-          </div>
-          <div class="column">
-            <select name="" id="">
-              <option v-for="day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']" :value="day">
-                {{ day }}
-              </option>
-            </select>
-            <select name="" id="">
-              <option v-for="number in 24" :value="number + 1">{{ number + 1 }}:00</option>
-            </select>
-            <select name="" id="">
-              <option v-for="number in 24" :value="number + 1">{{ number + 1 }}:00</option>
-            </select>
-            <ul v-if="availability.length > 0">
-              <li v-for="slot in availability">
-                Day: {{ slot.day }} | From: {{ slot.from }} | To: {{ slot.to }}
-              </li>
-            </ul>
-          </div>
-        </div>
+        <space-form
+          :space="space"
+          :save-space="createSpace"
+          :is-loading="requestLoading">
+        </space-form>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <pre>{{ space | json }}</pre>
       </div>
     </section>
   </div>
@@ -81,15 +27,72 @@
 
 <script>
 import LocationInput from '../partials/LocationInput'
+import SpaceForm from '../space/SpaceForm'
+import Firebase from '../../services/Firebase'
+import GeoFire from 'geofire'
+import Auth from '../../services/Auth'
 
 export default {
   components: {
-    LocationInput
+    LocationInput,
+    SpaceForm
   },
   data () {
     return {
+      requestLoading: false,
       location: {},
-      availability: []
+      space: {
+        owner: Auth.getUser().uid,
+        name: '',
+        description: '',
+        location: {
+          address: '',
+          lat: '',
+          lng: ''
+        },
+        availability: []
+      },
+      filterForm: {
+        day: 'Monday',
+        from: '9',
+        to: '17'
+      }
+    }
+  },
+  methods: {
+    addFilter: function () {
+      this.space.availability.push(this.filterForm)
+      this.filterForm = {
+        day: 'Monday',
+        from: '8',
+        to: '17'
+      }
+    },
+    removeFilter: function (filter) {
+      this.space.availability.splice(filter, 1)
+    },
+    createSpace: function () {
+      this.requestLoading = true
+
+      let spaceRef = Firebase.child('spaces').push()
+      let spaceID = spaceRef.key()
+      let spaceRequest = spaceRef.set(this.space)
+
+      let geoFire = new GeoFire(Firebase.child('_geofire/spaces'))
+      let geoQuery = geoFire.set(spaceID, [
+        this.space.location.lat,
+        this.space.location.lng
+      ])
+
+      let userRelation = Firebase.child('users/' + Auth.getUser().uid + '/spaces/' + spaceID).set(true)
+
+      Promise.all([spaceRequest, geoQuery, userRelation])
+      .then(() => {
+        this.requestLoading = false
+        this.$router.go({
+          name: 'me_spaces'
+        })
+      })
     }
   }
 }

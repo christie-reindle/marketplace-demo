@@ -3,18 +3,12 @@
     <header class="header">
       <div class="container">
         <div class="header-left">
-          <a href="#" class="header-item">
+          <a v-link="{ name: 'search' }" class="header-item">
             <span class="icon">
               <i class="fa fa-child"></i>
             </span> Rent a space
           </a>
-          <a v-link="'introduction'" class="header-tab">
-            Introduction
-          </a>
-          <a v-link="'search'" class="header-tab">
-            Search
-          </a>
-          <a v-link="'create_space'" class="header-tab">
+          <a v-link="{ name: 'create_space' }" class="header-tab">
             Create space
           </a>
         </div>
@@ -36,9 +30,9 @@
             </span>
           </template>
           <template v-else>
-            <span class="header-item">
+            <a v-link="{ name: 'me_bookings' }" class="header-item">
               <img :src="user.image" class="image is-24x24">&nbsp; {{ user.name }}
-            </span>
+            </a>
             <span class="header-item">
               <a class="button is-info is-outlined" @click.prevent="logout()">Log out</a>
             </span>
