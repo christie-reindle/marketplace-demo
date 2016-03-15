@@ -140,7 +140,25 @@ export default {
   props: {
     space: Object,
     saveSpace: Function,
-    isLoading: Boolean
+    isLoading: Boolean,
+    timekitFilter: Object
+  },
+  computed: {
+    timekitFilter: function () {
+      let filter = {}
+
+      filter.or = this.space.availability.map(slot => {
+        return {
+          specific_day_and_time: {
+            day: slot.day,
+            start: slot.from,
+            end: slot.to
+          }
+        }
+      })
+
+      return filter
+    }
   },
   methods: {
     addFilter: function () {

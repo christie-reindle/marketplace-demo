@@ -12,14 +12,10 @@
       <div class="container">
         <space-form
           :space="space"
+          :timekit-filter.sync="timekitFilter"
           :save-space="createSpace"
           :is-loading="requestLoading">
         </space-form>
-      </div>
-    </section>
-    <section class="section">
-      <div class="container">
-        <pre>{{ space | json }}</pre>
       </div>
     </section>
   </div>
@@ -31,6 +27,7 @@ import SpaceForm from '../space/SpaceForm'
 import Firebase from '../../services/Firebase'
 import GeoFire from 'geofire'
 import Auth from '../../services/Auth'
+import Api from '../../services/Api'
 
 export default {
   components: {
@@ -43,6 +40,8 @@ export default {
       location: {},
       space: {
         owner: Auth.getUser().uid,
+        calendar_id: '',
+        filter_id: '',
         name: '',
         description: '',
         location: {
@@ -56,7 +55,8 @@ export default {
         day: 'Monday',
         from: '9',
         to: '17'
-      }
+      },
+      timekitFilter: {}
     }
   },
   methods: {
@@ -74,23 +74,47 @@ export default {
     createSpace: function () {
       this.requestLoading = true
 
-      let spaceRef = Firebase.child('spaces').push()
-      let spaceID = spaceRef.key()
-      let spaceRequest = spaceRef.set(this.space)
+      let timekitRequests = []
 
-      let geoFire = new GeoFire(Firebase.child('_geofire/spaces'))
-      let geoQuery = geoFire.set(spaceID, [
-        this.space.location.lat,
-        this.space.location.lng
-      ])
+      timekitRequests.push(Api.createCalendar({
+        name: this.space.name,
+        description: this.space.name + ': ' + this.space.description
+      })
+      .then(response => {
+        return response.data.id
+      }))
 
-      let userRelation = Firebase.child('users/' + Auth.getUser().uid + '/spaces/' + spaceID).set(true)
+      timekitRequests.push(Api.makeRequest({
+        url: '/findtime/filtercollections',
+        method: 'post',
+        data: this.timekitFilter
+      })
+      .then(response => {
+        return response.data.id
+      }))
 
-      Promise.all([spaceRequest, geoQuery, userRelation])
-      .then(() => {
-        this.requestLoading = false
-        this.$router.go({
-          name: 'me_spaces'
+      Promise.all(timekitRequests).then(responses => {
+        this.space.calendar_id = responses[0]
+        this.space.filter_id = responses[1]
+
+        let spaceRef = Firebase.child('spaces').push()
+        let spaceID = spaceRef.key()
+        let spaceRequest = spaceRef.set(this.space)
+
+        let geoFire = new GeoFire(Firebase.child('_geofire/spaces'))
+        let geoQuery = geoFire.set(spaceID, [
+          this.space.location.lat,
+          this.space.location.lng
+        ])
+
+        let userRelation = Firebase.child('users/' + Auth.getUser().uid + '/spaces/' + spaceID).set(true)
+
+        Promise.all([spaceRequest, geoQuery, userRelation])
+        .then(() => {
+          this.requestLoading = false
+          this.$router.go({
+            name: 'me_spaces'
+          })
         })
       })
     }

@@ -1,9 +1,12 @@
 <template>
   <div>
     <template v-for="space in spaces">
-      <space-list-item
-        :space="space">
-      </space-list-item>
+      <div class="box">
+        <space-list-item
+          :space="space"
+          :filters="filters">
+        </space-list-item>
+      </div>
     </template>
   </div>
 </template>
@@ -16,7 +19,8 @@ export default {
     SpaceListItem
   },
   props: {
-    spaces: Array
+    spaces: Array,
+    filters: Object
   }
 }
 </script>
