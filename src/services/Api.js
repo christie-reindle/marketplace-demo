@@ -7,5 +7,6 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 Timekit.configure(config)
+Timekit.setUser('hh@henninghorn.dk', 'GcRwTGIxurEYF7UQ7fN7P6Anw0iYu8n1')
 
 export default Timekit
