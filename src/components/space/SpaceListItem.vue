@@ -52,12 +52,16 @@ export default {
         this.isLoading = false
         this.timeslots = response.data
       })
+      .catch(error => {
+        console.log('findtime error', error)
+        this.isLoading = false
+      })
     },
     bookSpace: function () {
       this.$dispatch('book-space', this.space)
     }
   },
-  ready: function () {
+  created: function () {
     this.findTime()
   },
   filters: {

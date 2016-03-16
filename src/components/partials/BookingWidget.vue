@@ -7,6 +7,8 @@
 </template>
 
 <script>
+import Firebase from '../../services/Firebase'
+
 export default {
   props: {
     space: Object,
@@ -15,20 +17,23 @@ export default {
   data () {
     return {
       email: 'hh@henninghorn.dk',
-      apiToken: 'GcRwTGIxurEYF7UQ7fN7P6Anw0iYu8n1'
+      apiToken: 'PpHkb93DCwJDQQHNS09JLardIQczCuGa'
     }
   },
   ready: function () {
-    this.initBookingWidget()
+    Firebase.child('users/' + this.space.owner + '/timekit').once('value', data => {
+      let timekitCredentials = data.val()
+      this.initBookingWidget(timekitCredentials.email, timekitCredentials.api_token)
+    })
   },
   methods: {
-    initBookingWidget: function () {
+    initBookingWidget: function (email, token) {
       let widget = new window.TimekitBooking()
 
       widget.init({
         name: this.space.name,
-        email: this.email,
-        apiToken: this.apiToken,
+        email: email,
+        apiToken: token,
         calendar: this.space.calendar_id,
         timekitConfig: {
           app: 'marketplace-demo',
@@ -39,8 +44,9 @@ export default {
           length: this.filters.length
         },
         timekitCreateBooking: {
-          graph: 'instant',
-          action: 'confirm'
+          graph: 'confirm_decline',
+          action: 'create',
+          where: this.space.location.address
         },
         callbacks: {
           createBookingSuccessful: (response) => {

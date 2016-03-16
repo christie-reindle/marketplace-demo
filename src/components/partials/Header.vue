@@ -41,7 +41,9 @@
 </template>
 
 <script>
+import Api from '../../services/Api'
 import Auth from '../../services/Auth'
+import Firebase from '../../services/Firebase'
 
 export default {
   data () {
@@ -59,24 +61,38 @@ export default {
 
       if (this.isAuthenticated) {
         let user = Auth.getUser()
+        let socialUser = {}
 
         if (user.auth.provider === 'facebook') {
           this.user.name = user.facebook.displayName
           this.user.image = user.facebook.profileImageURL
+          let fbUser = user.facebook.cachedUserProfile
+
+          socialUser = {
+            email: fbUser.email,
+            first_name: fbUser.first_name,
+            last_name: fbUser.last_name
+          }
         }
 
-        // Api.createUser({
-        //   email: fbUser.email,
-        //   timezone: 'Europe/Copenhagen',
-        //   first_name: fbUser.first_name,
-        //   last_name: fbUser.last_name
-        // })
-        // .then(response => {
-        //   timekitRef.set(response.data)
-        // })
-        // .catch(error => {
-        //   console.log('timekit error', error)
-        // })
+        let timekitRef = Firebase.child('users/' + user.uid + '/timekit')
+
+        timekitRef.once('value', function (data) {
+          if (!data.exists()) {
+            Api.createUser({
+              email: socialUser.email,
+              timezone: 'Europe/Copenhagen',
+              first_name: socialUser.first_name,
+              last_name: socialUser.last_name
+            })
+            .then(response => {
+              timekitRef.set(response.data)
+            })
+            .catch(error => {
+              console.log('timekit error', error)
+            })
+          }
+        })
       }
     })
   },

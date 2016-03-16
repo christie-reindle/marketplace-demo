@@ -159,8 +159,7 @@ export default {
 
         geoQuery.on('key_entered', (key, location, distance) => {
           spacesRef.child(key).once('value', data => {
-            let space = data.val()
-            space.distance = distance
+            let space = Object.assign({ distance: distance }, data.val())
             this.spaces.push(space)
           })
         })
