@@ -14,7 +14,7 @@
           <div class="column is-half">
             <h2 class="title">Introduction</h2>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed, beatae. Odit tenetur dolorem illo sint ut repellendus sunt, eum optio sit, voluptate, aperiam ea omnis modi nihil a, excepturi reprehenderit?
+              Go search for a place to book, or login to create a space and confirm bookings.
             </p>
           </div>
         </div>
