@@ -37,8 +37,6 @@ export default {
         apiToken: token,
         calendar: this.space.calendar_id,
         timekitConfig: {
-          app: 'marketplace-demo',
-          apiBaseUrl: 'http://api-localhost.timekit.io/'
           app: Settings.get('timekit-app'),
           apiBaseUrl: Settings.get('timekit-api-url')
         },
