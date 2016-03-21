@@ -44,6 +44,7 @@
 import Api from '../../services/Api'
 import Auth from '../../services/Auth'
 import Firebase from '../../services/Firebase'
+import Settings from '../../services/Settings'
 
 export default {
   data () {
@@ -87,10 +88,17 @@ export default {
             })
             .then(response => {
               timekitRef.set(response.data)
+              Settings.set('timekit-email', response.data.email)
+              Settings.set('timekit-api-token', response.data.api_token)
+              Api.setUser(Settings.get('timekit-email'), Settings.get('timekit-api-token'))
             })
             .catch(error => {
               console.log('timekit error', error)
             })
+          } else {
+            Settings.set('timekit-email', data.val().email)
+            Settings.set('timekit-api-token', data.val().api_token)
+            Api.setUser(Settings.get('timekit-email'), Settings.get('timekit-api-token'))
           }
         })
       }
@@ -102,6 +110,8 @@ export default {
     },
     logout: function () {
       Auth.logout()
+      Settings.remove('timekit-email')
+      Settings.remove('timekit-api-token')
       this.$route.router.go('/')
     }
   }

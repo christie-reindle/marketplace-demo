@@ -1,7 +1,7 @@
-// import Firebase from './Firebase'
 import Timekit from 'timekit-sdk'
+import Settings from './Settings'
 
-let config = { app: 'marketplace-demo' }
+let config = { app: Settings.get('timekit-app') }
 
 if (process.env.NODE_ENV === 'development') {
   config.apiBaseUrl = 'http://api-localhost.timekit.io/'
@@ -9,14 +9,8 @@ if (process.env.NODE_ENV === 'development') {
 
 Timekit.configure(config)
 
-// let firebaseAuth = Firebase.getAuth()
-// if (firebaseAuth) {
-//   Firebase.child('users/' + firebaseAuth.uid + '/timekit').once('value', function (data) {
-//     let credentials = data.val()
-//     Timekit.setUser(credentials.email, credentials.api_token)
-//   })
-// }
-
-Timekit.setUser('hh@henninghorn.dk', 'PpHkb93DCwJDQQHNS09JLardIQczCuGa')
+if (Settings.get('timekit-email') && Settings.get('timekit-api-token')) {
+  Timekit.setUser(Settings.get('timekit-email'), Settings.get('timekit-api-token'))
+}
 
 export default Timekit

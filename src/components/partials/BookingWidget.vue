@@ -8,6 +8,7 @@
 
 <script>
 import Firebase from '../../services/Firebase'
+import Settings from '../../services/Settings'
 
 export default {
   props: {
@@ -38,6 +39,8 @@ export default {
         timekitConfig: {
           app: 'marketplace-demo',
           apiBaseUrl: 'http://api-localhost.timekit.io/'
+          app: Settings.get('timekit-app'),
+          apiBaseUrl: Settings.get('timekit-api-url')
         },
         timekitFindTime: {
           filtercollection_id: this.space.filter_id,
