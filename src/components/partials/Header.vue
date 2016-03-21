@@ -8,7 +8,7 @@
               <i class="fa fa-child"></i>
             </span> Rent a space
           </a>
-          <a v-link="{ name: 'create_space' }" class="header-tab">
+          <a v-link="{ name: 'create_space' }" class="header-tab" v-if="isAuthenticated">
             Create space
           </a>
         </div>
