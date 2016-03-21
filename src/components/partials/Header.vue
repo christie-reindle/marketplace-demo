@@ -14,13 +14,13 @@
         </div>
 
         <!-- Hamburger menu (on mobile) -->
-        <span class="header-toggle">
+        <span class="header-toggle" :class="{ 'is-active': showMobileMenu }" @click="showMobileMenu = !showMobileMenu">
           <span></span>
           <span></span>
           <span></span>
         </span>
 
-        <div class="header-right header-menu">
+        <div class="header-right header-menu" :class="{ 'is-active': showMobileMenu }">
           <template v-if="!isAuthenticated">
             <span class="header-item">
               <a class="button is-info is-outlined" @click.prevent="login">Log in</a>
@@ -53,7 +53,8 @@ export default {
       user: {
         name: '',
         image: ''
-      }
+      },
+      showMobileMenu: false
     }
   },
   created: function () {
