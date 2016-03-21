@@ -15,12 +15,6 @@ export default {
     space: Object,
     filters: Object
   },
-  data () {
-    return {
-      email: 'hh@henninghorn.dk',
-      apiToken: 'PpHkb93DCwJDQQHNS09JLardIQczCuGa'
-    }
-  },
   ready: function () {
     Firebase.child('users/' + this.space.owner + '/timekit').once('value', data => {
       let timekitCredentials = data.val()
