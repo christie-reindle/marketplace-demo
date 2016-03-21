@@ -9,10 +9,9 @@ Feel free to contribute and comment.
 
 ## Setup your own copy
 1. Clone repo
-2. Run `npm install` and `npm run dev` to test
-2. Edit `/src/services/Api.js` and replace the “marketplace-demo” app name
-3. Edit `/src/services/Firebase.js` and use your Firebase app url
-4. Copy the contents of `/firebase-rules.json` into your Firebase app rules
+2. Edit `/src/services/Settings.js` and to match your settings
+3. Copy the contents of `/firebase-rules.json` into your Firebase app rules
+4. Run `npm install` and `npm run dev` to test
 
 ## Notes
 There’s a few bugs/features like:
