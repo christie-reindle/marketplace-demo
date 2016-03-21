@@ -28,7 +28,8 @@
             <a v-link="{ name: 'me_spaces_edit', params: { id: space.id } }" class="button is-small">
               Edit
             </a>
-            <button class="button is-danger is-small" @click.prevent="deleteSpace($index)">
+            <button class="button is-danger is-small" @click.prevent="deleteSpace($index)"
+              :class="{ 'is-loading': isDeleting === $index, 'is-disabled': isDeleting === $index }">
               Delete
             </button>
           </td>
@@ -41,20 +42,31 @@
 <script>
 import Firebase from '../../services/Firebase'
 import Auth from '../../services/Auth'
+import Api from '../../services/Api'
 
 export default {
   data () {
     return {
       user: Auth.getUser(),
-      spaces: []
+      spaces: [],
+      isDeleting: false
     }
   },
   methods: {
     deleteSpace: function (index) {
       let space = this.spaces[index]
-      Firebase.child('spaces/' + space.id).remove()
-      .then(() => {
-        this.splaces.splice(index, 1)
+      this.isDeleting = index
+
+      let deleteSpace = Firebase.child('spaces/' + space.id).remove()
+      let deleteGeofire = Firebase.child('_geofire/' + space.id).remove()
+      let deleteCalendar = Api.deleteCalendar({
+        id: space.calendar_id
+      })
+
+      Promise.all([deleteSpace, deleteGeofire, deleteCalendar])
+      .then(responses => {
+        this.spaces.splice(index, 1)
+        this.isDeleting = false
       })
     }
   },
@@ -66,6 +78,7 @@ export default {
 
       this.spaces.push({
         id: data.key(),
+        calendar_id: space.calendar_id,
         name: space.name,
         address: space.location.address
       })
