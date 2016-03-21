@@ -10,6 +10,9 @@
             Email
           </th>
           <th>
+            Time
+          </th>
+          <th>
             Space
           </th>
           <th>
@@ -30,6 +33,9 @@
             </template>
           </td>
           <td>
+            {{ booking.event.start | moment }} - {{ booking.event.end | moment }}
+          </td>
+          <td>
             {{ booking.calendar.name }}
           </td>
           <td>
@@ -46,6 +52,7 @@
 <script>
 import Api from '../../services/Api'
 import ConfirmDecline from '../booking/ConfirmDecline'
+import Moment from 'moment'
 
 export default {
   components: {
@@ -54,6 +61,11 @@ export default {
   data () {
     return {
       bookings: []
+    }
+  },
+  filters: {
+    moment: function (timestamp) {
+      return Moment(timestamp).format('HH:mm D/M YYYY')
     }
   },
   ready: function () {
