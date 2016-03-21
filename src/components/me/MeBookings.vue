@@ -33,10 +33,10 @@
             </template>
           </td>
           <td>
-            {{ booking.event.start | moment }} - {{ booking.event.end | moment }}
+            {{ booking.attributes.event_info.start | moment }} - {{ booking.attributes.event_info.end | moment }}
           </td>
           <td>
-            {{ booking.calendar.name }}
+            x
           </td>
           <td>
             <confirm-decline
