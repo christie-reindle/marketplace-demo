@@ -41,7 +41,9 @@ export default {
         },
         timekitFindTime: {
           filtercollection_id: this.space.filter_id,
-          length: this.filters.length
+          start: 'today',
+          length: this.filters.length,
+          future: this.filters.future
         },
         timekitCreateBooking: {
           graph: 'confirm_decline',
