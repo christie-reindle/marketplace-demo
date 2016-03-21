@@ -44,8 +44,8 @@ export default {
           this.space.calendar_id
         ],
         filtercollection_id: this.space.filter_id,
-        start: '1 day',
-        future: '10 days',
+        start: 'now',
+        future: this.filters.future,
         length: this.filters.length
       })
       .then(response => {
