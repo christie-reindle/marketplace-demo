@@ -43,7 +43,7 @@ export default {
     saveSpace: function () {
       this.requestLoading = true
 
-      let timekitRequest = Api.makeRequest({
+      let timekitFilterRequest = Api.makeRequest({
         url: '/findtime/filtercollections/' + this.space.filter_id,
         method: 'put',
         data: this.timekitFilter
@@ -54,7 +54,7 @@ export default {
 
       let firebaseRequest = Firebase.child('spaces/' + this.$route.params.id).update(this.space)
 
-      Promise.all([timekitRequest, firebaseRequest])
+      Promise.all([timekitFilterRequest, firebaseRequest])
       .then(responses => {
         this.requestLoading = false
         this.$router.go({
