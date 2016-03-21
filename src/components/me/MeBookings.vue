@@ -12,6 +12,9 @@
           <th>
             Space
           </th>
+          <th>
+            Actions
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -27,7 +30,12 @@
             </template>
           </td>
           <td>
-            .
+            {{ booking.calendar.name }}
+          </td>
+          <td>
+            <confirm-decline
+              :booking="booking">
+            </confirm-decline>
           </td>
         </tr>
       </tbody>
@@ -37,8 +45,12 @@
 
 <script>
 import Api from '../../services/Api'
+import ConfirmDecline from '../booking/ConfirmDecline'
 
 export default {
+  components: {
+    ConfirmDecline
+  },
   data () {
     return {
       bookings: []
