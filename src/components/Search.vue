@@ -18,7 +18,7 @@
               </location-input>
             </p>
             <p class="control">
-              Find places within
+              Find places within a radius of
             </p>
             <p class="control">
               <label class="radio">
@@ -47,33 +47,56 @@
                 Search
               </button>
             </p>
-            <hr>
-            <p class="control">
-              <label class="label">
-                Booking length
-              </label>
-              <span class="select">
-                <select v-model="filtersForm.length">
-                  <option v-for="hours in 8" :value="(hours + 1) + ' hours'">
-                    {{ (hours + 1) }} hours
-                  </option>
-                </select>
-              </span>
-            </p>
-            <p class="control">
-              <button class="button is-small" @click.prevent="updateFilter">
-                Update filter
-              </button>
-            </p>
           </form>
         </div>
       </section>
       <section class="section">
         <div class="container">
-          <space-list
-            :spaces="spaces"
-            :filters="filtersForm">
-          </space-list>
+          <div class="columns">
+            <div class="column is-4 content" v-if="spaces.length > 0">
+              <h3 class="title">
+                Booking preferences
+              </h3>
+              <p class="subtitle is-6">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odio, asperiores?
+              </p>
+              <p class="control">
+                <label class="label">
+                  Booking length
+                </label>
+                <span class="select">
+                  <select v-model="filtersForm.length">
+                    <option v-for="hours in 8" :value="(hours + 1) + ' hours'">
+                      {{ (hours + 1) }} hours
+                    </option>
+                  </select>
+                </span>
+              </p>
+              <p class="control">
+                <label class="label">
+                  Available within
+                </label>
+                <span class="select">
+                  <select v-model="filtersForm.future">
+                    <option v-for="days in 7" :value="(days + 1) + ' days'">
+                      {{ (days + 1) }} days
+                    </option>
+                  </select>
+                </span>
+              </p>
+              <p class="control">
+                <button class="button is-info is-small" @click.prevent="updateFilter">
+                  Update filter
+                </button>
+              </p>
+            </div>
+            <div class="column">
+              <space-list
+                :spaces="spaces"
+                :filters="filtersForm">
+              </space-list>
+            </div>
+          </div>
         </div>
       </section>
     </div>
@@ -126,7 +149,8 @@ export default {
         loading: false
       },
       filtersForm: {
-        length: '1 hours'
+        length: '1 hours',
+        future: '1 days'
       },
       spaces: [],
       view: 'search'
@@ -158,9 +182,12 @@ export default {
         })
 
         geoQuery.on('key_entered', (key, location, distance) => {
-          spacesRef.child(key).once('value', data => {
-            let space = Object.assign({ distance: distance }, data.val())
-            this.spaces.push(space)
+          spacesRef.child(key).once('value')
+          .then(data => {
+            if (data.exists()) {
+              let space = Object.assign({ distance: distance }, data.val())
+              this.spaces.push(space)
+            }
           })
         })
       }, 500)
