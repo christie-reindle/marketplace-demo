@@ -1,0 +1,35 @@
+{
+    "rules": {
+      ".read": true,
+      ".write": false,
+
+      "users": {
+        ".read": true,
+        ".write": false,
+
+        "$user": {
+          ".write": "auth.uid === $user"
+        }
+      },
+
+      "spaces": {
+        ".read": true,
+        ".write": "auth != null",
+        ".indexOn": ["owner"],
+        "$space": {
+          "owner": {
+            ".validate": "newData.val() == auth.uid"
+          }
+        }
+      },
+
+      "_geofire": {
+        ".read": true,
+        ".write": "auth != null",
+
+        "$type": {
+          ".indexOn": ["g"]
+        }
+      }
+    }
+}
