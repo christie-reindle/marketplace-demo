@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section class="hero is-medium is-info is-bold">
+    <section class="hero is-medium is-info is-bold is-left">
       <div class="hero-content">
         <div class="container">
           <h1 class="title is-2">Rent a space</h1>
@@ -12,7 +12,7 @@
       <div class="container">
         <div class="columns">
           <div class="column is-half">
-            <h2 class="title">Introduction</h2>
+            <h2 class="title">About</h2>
             <p>
               Go search for a place to book, or login to create a space and confirm bookings.
             </p>
