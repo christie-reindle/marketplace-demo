@@ -23,20 +23,16 @@
       <tbody>
         <tr v-for="booking in bookings">
           <td>
-            <template v-for="customer in booking.customers">
-              {{ customer.name }}
-            </template>
+            {{ booking.attributes.customer.name }}
           </td>
           <td>
-            <template v-for="customer in booking.customers">
-              {{ customer.email }}
-            </template>
+            {{ booking.attributes.customer.email }}
           </td>
           <td>
             {{ booking.attributes.event_info.start | moment }} - {{ booking.attributes.event_info.end | moment }}
           </td>
           <td>
-            x
+            {{ booking.calendar.display_name }}
           </td>
           <td>
             <confirm-decline
@@ -69,7 +65,7 @@ export default {
     }
   },
   ready: function () {
-    Api.getBookings()
+    Api.include('attributes', 'calendar').getBookings()
     .then(response => {
       this.bookings = response.data
     })
