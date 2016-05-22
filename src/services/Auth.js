@@ -13,11 +13,10 @@ let Auth = (function () {
     return user !== null
   }
 
-  Auth.loginFacebook = function () {
-    Firebase.authWithOAuthRedirect('facebook', function (error) {
-      console.log('Facebook login error', error)
-    }, {
-      scope: 'email'
+  Auth.loginPassword = function (email, password) {
+    return Firebase.authWithPassword({
+      email: email,
+      password: password
     })
   }
 

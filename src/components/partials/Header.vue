@@ -11,6 +11,9 @@
           <a v-link="{ name: 'create_space' }" class="header-tab" v-if="isAuthenticated">
             Create space
           </a>
+          <a v-link="{ name: 'about' }" class="header-tab">
+            About
+          </a>
         </div>
 
         <!-- Hamburger menu (on mobile) -->
@@ -23,12 +26,12 @@
         <div class="header-right header-menu" :class="{ 'is-active': showMobileMenu }">
           <template v-if="!isAuthenticated">
             <span class="header-item">
-              <a class="button is-info is-outlined" @click.prevent="login">Log in</a>
+              <a class="button is-info is-outlined" @click.prevent="displayLoginModal">Log in</a>
             </span>
           </template>
           <template v-else>
             <a v-link="{ name: 'me_bookings' }" class="header-item">
-              <img :src="user.image" class="image is-24x24">&nbsp; {{ user.name }}
+              <img :src="user.image" class="image is-24x24">&nbsp; Your account
             </a>
             <span class="header-item">
               <a class="button is-info is-outlined" @click.prevent="logout">Log out</a>
@@ -38,12 +41,35 @@
       </div>
     </header>
   </div>
+  <div class="modal" :class="{ 'is-active': loginModalVisible }">
+    <div class="modal-background"></div>
+    <div class="modal-container">
+      <div class="modal-content">
+        <div class="box">
+          <form class="" action="index.html" method="post" @submit.prevent="loginUser">
+            <p class="control">
+              <input type="text" class="input" placeholder="E-mail" v-model="login.email">
+            </p>
+            <p class="control">
+              <input type="password" class="input" placeholder="Password" v-model="login.password">
+            </p>
+            <p class="control">
+              <button class="button is-primary">
+                Log in
+              </button>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+    <button class="modal-close" @click="closeLoginModal"></button>
+  </div>
 </template>
 
 <script>
 import Api from '../../services/Api'
 import Auth from '../../services/Auth'
-import Firebase from '../../services/Firebase'
+// import Firebase from '../../services/Firebase'
 import Settings from '../../services/Settings'
 
 export default {
@@ -51,10 +77,14 @@ export default {
     return {
       isAuthenticated: false,
       user: {
-        name: '',
         image: ''
       },
-      showMobileMenu: false
+      showMobileMenu: false,
+      loginModalVisible: false,
+      login: {
+        email: '',
+        password: ''
+      }
     }
   },
   created: function () {
@@ -63,51 +93,32 @@ export default {
 
       if (this.isAuthenticated) {
         let user = Auth.getUser()
-        let socialUser = {}
 
-        if (user.auth.provider === 'facebook') {
-          this.user.name = user.facebook.displayName
-          this.user.image = user.facebook.profileImageURL
-          let fbUser = user.facebook.cachedUserProfile
-
-          socialUser = {
-            email: fbUser.email,
-            first_name: fbUser.first_name,
-            last_name: fbUser.last_name
-          }
+        if (user.auth.provider === 'password') {
+          this.user.image = user.password.profileImageURL
         }
 
-        let timekitRef = Firebase.child('users/' + user.uid + '/timekit')
-
-        timekitRef.once('value', function (data) {
-          if (!data.exists()) {
-            Api.createUser({
-              email: socialUser.email,
-              timezone: 'Europe/Copenhagen',
-              first_name: socialUser.first_name,
-              last_name: socialUser.last_name
-            })
-            .then(response => {
-              timekitRef.set(response.data)
-              Settings.set('timekit-email', response.data.email)
-              Settings.set('timekit-api-token', response.data.api_token)
-              Api.setUser(Settings.get('timekit-email'), Settings.get('timekit-api-token'))
-            })
-            .catch(error => {
-              console.log('timekit error', error)
-            })
-          } else {
-            Settings.set('timekit-email', data.val().email)
-            Settings.set('timekit-api-token', data.val().api_token)
-            Api.setUser(Settings.get('timekit-email'), Settings.get('timekit-api-token'))
-          }
-        })
+        Api.setUser(Settings.get('timekit-email'), Settings.get('timekit-api-token'))
       }
     })
   },
   methods: {
+    displayLoginModal: function () {
+      this.loginModalVisible = true
+    },
+    closeLoginModal: function () {
+      this.loginModalVisible = false
+    },
     login: function () {
       Auth.loginFacebook()
+    },
+    loginUser: function () {
+      Auth.loginPassword(this.login.email, this.login.password)
+      .then(response => {
+        this.loginModalVisible = false
+      }).catch(error => {
+        console.log('error', error)
+      })
     },
     logout: function () {
       Auth.logout()

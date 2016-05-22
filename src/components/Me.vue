@@ -4,7 +4,7 @@
       <div class="hero-content">
         <div class="container">
           <h1 class="title is-2">Your account</h1>
-          <p class="subtitle is-5">Welcome back, {{ name }}</p>
+          <p class="subtitle is-5">Manage bookings and spaces</p>
         </div>
       </div>
     </section>
@@ -25,15 +25,3 @@
     </section>
   </div>
 </template>
-
-<script>
-import Auth from '../services/Auth'
-
-export default {
-  data () {
-    return {
-      name: Auth.getUser().facebook.displayName
-    }
-  }
-}
-</script>
