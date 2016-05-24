@@ -5,8 +5,13 @@ let store = Storage.create({
 })
 
 store.set('timekit-app', 'marketplace-demo')
-store.set('timekit-api-url', 'http://api-localhost.timekit.io/')
 store.set('firebase-url', 'https://timekit-rmt.firebaseio.com/')
+
+if (process.env.NODE_ENV === 'development') {
+  store.set('timekit-api-url', 'http://api-localhost.timekit.io/')
+} else {
+  store.set('timekit-api-url', 'http://api.timekit.io/')
+}
 
 function get (key) {
   return store.get(key)
