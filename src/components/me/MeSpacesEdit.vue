@@ -3,9 +3,9 @@
     <space-form
       v-if="spaceLoaded"
       :space.sync="space"
-      :timekit-filter.sync="timekitFilter"
       :save-space="saveSpace"
-      :is-loading="requestLoading">
+      :is-loading="requestLoading"
+      v-ref:form>
     </space-form>
     <template v-else>
       Loading...
@@ -17,6 +17,7 @@
 import SpaceForm from '../space/SpaceForm'
 import Firebase from '../../services/Firebase'
 import Api from '../../services/Api'
+import GeoFire from 'geofire'
 
 export default {
   components: {
@@ -28,7 +29,7 @@ export default {
       space: Object,
       requestLoading: false,
       spaceLoaded: false,
-      timekitFilter: Object
+      timekitFilter: {}
     }
   },
   created: function () {
@@ -38,6 +39,11 @@ export default {
       this.space = data.val()
       this.spaceLoaded = true
     })
+  },
+  computed: {
+    timekitFilter: function () {
+      return this.$refs.form.timekitFilter
+    }
   },
   methods: {
     saveSpace: function () {
@@ -52,9 +58,17 @@ export default {
         return response.data
       })
 
-      let firebaseRequest = Firebase.child('spaces/' + this.$route.params.id).update(this.space)
+      let spaceID = this.$route.params.id
 
-      Promise.all([timekitFilterRequest, firebaseRequest])
+      let firebaseRequest = Firebase.child('spaces/' + spaceID).update(this.space)
+
+      let geoFire = new GeoFire(Firebase.child('_geofire/spaces'))
+      let geoRequest = geoFire.set(spaceID, [
+        this.space.location.lat,
+        this.space.location.lng
+      ])
+
+      Promise.all([timekitFilterRequest, firebaseRequest, geoRequest])
       .then(responses => {
         this.requestLoading = false
         this.$router.go({

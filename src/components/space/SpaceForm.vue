@@ -134,14 +134,14 @@ export default {
         day: 'Monday',
         from: '8',
         to: '17'
-      }
+      },
+      timekitFilter: Object
     }
   },
   props: {
     space: Object,
     saveSpace: Function,
-    isLoading: Boolean,
-    timekitFilter: Object
+    isLoading: Boolean
   },
   computed: {
     timekitFilter: function () {

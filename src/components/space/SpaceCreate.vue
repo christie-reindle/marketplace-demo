@@ -12,9 +12,9 @@
       <div class="container">
         <space-form
           :space="space"
-          :timekit-filter.sync="timekitFilter"
           :save-space="createSpace"
-          :is-loading="requestLoading">
+          :is-loading="requestLoading"
+          v-ref:form>
         </space-form>
       </div>
     </section>
@@ -55,8 +55,12 @@ export default {
         day: 'Monday',
         from: '9',
         to: '17'
-      },
-      timekitFilter: {}
+      }
+    }
+  },
+  computed: {
+    timekitFilter: function () {
+      return this.$refs.form.timekitFilter
     }
   },
   methods: {
