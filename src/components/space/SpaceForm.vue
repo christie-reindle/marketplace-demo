@@ -7,7 +7,7 @@
             About your place
           </h2>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate totam, saepe ipsum libero possimus expedita quibusdam ullam asperiores eum temporibus.
+            Enter some basic information about your place you want to rent.
           </p>
         </div>
       </div>
@@ -42,7 +42,7 @@
             Availability
           </h2>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos, nobis.
+            Please specify on which days and hours of the day is your space available.
           </p>
         </div>
       </div>

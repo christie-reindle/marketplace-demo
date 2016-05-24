@@ -58,7 +58,7 @@
                 Booking preferences
               </h3>
               <p class="subtitle is-6">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odio, asperiores?
+                Check availability across search results
               </p>
               <p class="control">
                 <label class="label">
