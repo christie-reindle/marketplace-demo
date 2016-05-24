@@ -1,3 +1,4 @@
+import Auth from '../services/Auth'
 import About from '../components/About'
 import Search from '../components/Search'
 import SpaceCreate from '../components/space/SpaceCreate'
@@ -23,13 +24,15 @@ export default function (router) {
     '/create_space': {
       name: 'create_space',
       component: SpaceCreate,
-      layout: 'default'
+      layout: 'default',
+      auth: true
     },
 
     '/me': {
       name: 'me',
       component: Me,
       layout: 'default',
+      auth: true,
       subRoutes: {
         '/bookings': {
           name: 'me_bookings',
@@ -49,5 +52,13 @@ export default function (router) {
 
   router.redirect({
     '*': 'search'
+  })
+
+  router.beforeEach(function (transition) {
+    if (transition.to.auth && !Auth.isAuthenticated()) {
+      transition.redirect('/')
+    } else {
+      transition.next()
+    }
   })
 }
