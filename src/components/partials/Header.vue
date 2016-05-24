@@ -80,7 +80,7 @@
 <script>
 import Api from '../../services/Api'
 import Auth from '../../services/Auth'
-// import Firebase from '../../services/Firebase'
+import Firebase from '../../services/Firebase'
 import Settings from '../../services/Settings'
 
 export default {
@@ -110,7 +110,14 @@ export default {
           this.user.image = user.password.profileImageURL
         }
 
-        Api.setUser(Settings.get('timekit-email'), Settings.get('timekit-api-token'))
+        Firebase.child('users/' + user.uid + '/timekit').once('value', data => {
+          let timekitCredentials = data.val()
+
+          Settings.set('timekit-email', timekitCredentials.email)
+          Settings.set('timekit-api-token', timekitCredentials.api_token)
+
+          Api.setUser(Settings.get('timekit-email'), Settings.get('timekit-api-token'))
+        })
       }
     })
   },
