@@ -46,12 +46,23 @@
     <div class="modal-container">
       <div class="modal-content">
         <div class="box">
-          <form class="" action="index.html" method="post" @submit.prevent="loginUser">
+          <article class="message is-danger" v-show="login.error != ''">
+            <div class="message-body">
+              {{ login.error }}
+            </div>
+          </article>
+          <form method="post" @submit.prevent="loginUser">
             <p class="control">
               <input type="text" class="input" placeholder="E-mail" v-model="login.email">
+              <span class="help">
+                Email: marketplace-demo@timekit.io
+              </span>
             </p>
             <p class="control">
               <input type="password" class="input" placeholder="Password" v-model="login.password">
+              <span class="help">
+                Password: marketplace-demo-password
+              </span>
             </p>
             <p class="control">
               <button class="button is-primary">
@@ -83,7 +94,8 @@ export default {
       loginModalVisible: false,
       login: {
         email: '',
-        password: ''
+        password: '',
+        error: ''
       }
     }
   },
@@ -109,15 +121,13 @@ export default {
     closeLoginModal: function () {
       this.loginModalVisible = false
     },
-    login: function () {
-      Auth.loginFacebook()
-    },
     loginUser: function () {
       Auth.loginPassword(this.login.email, this.login.password)
       .then(response => {
         this.loginModalVisible = false
+        this.login.error = ''
       }).catch(error => {
-        console.log('error', error)
+        this.login.error = error
       })
     },
     logout: function () {
