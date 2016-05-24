@@ -57,13 +57,14 @@ export default {
       let space = this.spaces[index]
       this.isDeleting = index
 
-      let deleteSpace = Firebase.child('spaces/' + space.id).remove()
-      let deleteGeofire = Firebase.child('_geofire/' + space.id).remove()
+      let deleteSpace = Firebase.child('spaces/' + space.id).set(null)
+      let deleteSpaceRelation = Firebase.child('users/' + this.user.uid + '/spaces/' + space.id).set(null)
+      let deleteGeofire = Firebase.child('_geofire/spaces/' + space.id).set(null)
       let deleteCalendar = Api.deleteCalendar({
         id: space.calendar_id
       })
 
-      Promise.all([deleteSpace, deleteGeofire, deleteCalendar])
+      Promise.all([deleteSpace, deleteSpaceRelation, deleteGeofire, deleteCalendar])
       .then(responses => {
         this.spaces.splice(index, 1)
         this.isDeleting = false
