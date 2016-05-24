@@ -12,6 +12,11 @@
       <section class="section">
         <div class="container">
           <form @submit.prevent="search">
+            <article class="message is-danger" v-show="searchForm.empty">
+              <div class="message-body">
+                Please enter a location
+              </div>
+            </article>
             <p class="control">
               <location-input :location.sync="searchForm.location" :id="'location'">
                 <input type="text" class="input is-medium" id="location" placeholder="Enter a location">
@@ -146,7 +151,8 @@ export default {
           address: ''
         },
         radius: 10,
-        loading: false
+        loading: false,
+        empty: false
       },
       filtersForm: {
         length: '1 hours',
@@ -165,6 +171,14 @@ export default {
       this.searchForm.loading = true
 
       window.setTimeout(() => {
+        if (this.searchForm.location.address === '') {
+          this.searchForm.empty = true
+          this.searchForm.loading = false
+          return
+        } else {
+          this.searchForm.empty = false
+        }
+
         let spacesRef = Firebase.child('spaces')
         let geoFire = new GeoFire(Firebase.child('_geofire/spaces'))
         let geoQuery = geoFire.query({

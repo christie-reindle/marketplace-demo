@@ -10,6 +10,11 @@
     </section>
     <section class="section">
       <div class="container">
+        <article class="message is-danger" v-show="errors">
+          <div class="message-body">
+            Invalid form data
+          </div>
+        </article>
         <space-form
           :space="space"
           :save-space="createSpace"
@@ -37,6 +42,7 @@ export default {
   data () {
     return {
       requestLoading: false,
+      errors: false,
       location: {},
       space: {
         owner: Auth.getUser().uid,
@@ -120,6 +126,10 @@ export default {
             name: 'me_spaces'
           })
         })
+      })
+      .catch(errors => {
+        this.errors = true
+        this.requestLoading = false
       })
     }
   }

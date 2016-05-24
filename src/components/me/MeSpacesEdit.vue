@@ -1,5 +1,10 @@
 <template>
   <div>
+    <article class="message is-danger" v-show="errors">
+      <div class="message-body">
+        Invalid form data
+      </div>
+    </article>
     <space-form
       v-if="spaceLoaded"
       :space.sync="space"
@@ -29,7 +34,8 @@ export default {
       space: Object,
       requestLoading: false,
       spaceLoaded: false,
-      timekitFilter: {}
+      timekitFilter: {},
+      errors: false
     }
   },
   created: function () {
@@ -54,9 +60,6 @@ export default {
         method: 'put',
         data: this.timekitFilter
       })
-      .then(response => {
-        return response.data
-      })
 
       let spaceID = this.$route.params.id
 
@@ -74,6 +77,10 @@ export default {
         this.$router.go({
           name: 'me_spaces'
         })
+      })
+      .catch(errors => {
+        this.errors = true
+        this.requestLoading = false
       })
     }
   }
