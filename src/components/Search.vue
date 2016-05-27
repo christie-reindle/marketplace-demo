@@ -52,6 +52,7 @@
                 Search
               </button>
             </p>
+            <p><i>Tip: Try searching for "Copenhagen"</i></p>
           </form>
         </div>
       </section>

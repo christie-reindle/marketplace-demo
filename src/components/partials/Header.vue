@@ -46,6 +46,8 @@
     <div class="modal-container">
       <div class="modal-content">
         <div class="box">
+          <p><strong>Login for vendors</strong></p>
+          <br />
           <article class="message is-danger" v-show="login.error != ''">
             <div class="message-body">
               {{ login.error }}
@@ -54,21 +56,16 @@
           <form method="post" @submit.prevent="loginUser">
             <p class="control">
               <input type="text" class="input" placeholder="E-mail" v-model="login.email">
-              <span class="help">
-                Email: marketplace-demo@timekit.io
-              </span>
             </p>
             <p class="control">
               <input type="password" class="input" placeholder="Password" v-model="login.password">
-              <span class="help">
-                Password: marketplace-demo-password
-              </span>
             </p>
             <p class="control">
               <button class="button is-primary">
                 Log in
               </button>
             </p>
+            <p><i>Tip: You can login with any valid Timekit user. For demo purposes, we've prefilled the inputs with an existing demo account. </i></p>
           </form>
         </div>
       </div>
@@ -93,8 +90,8 @@ export default {
       showMobileMenu: false,
       loginModalVisible: false,
       login: {
-        email: '',
-        password: '',
+        email: Settings.get('default-user-email'),
+        password: Settings.get('default-user-password'),
         error: ''
       }
     }
