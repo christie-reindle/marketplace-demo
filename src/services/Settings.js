@@ -11,7 +11,7 @@ store.set('google-maps-key', 'AIzaSyACwmNz_uSpQQTao9KStvrYdDJV7qgRfXA')
 if (process.env.NODE_ENV === 'development') {
   store.set('timekit-api-url', 'http://api-localhost.timekit.io/')
 } else {
-  store.set('timekit-api-url', 'http://api.timekit.io/')
+  store.set('timekit-api-url', 'https://api.timekit.io/')
 }
 
 function get (key) {
