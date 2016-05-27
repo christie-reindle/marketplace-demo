@@ -4,11 +4,14 @@
       ".write": false,
 
       "users": {
-        ".read": true,
+        ".read": false,
         ".write": false,
 
-        "$user": {
-          ".write": "auth.uid === $user"
+        "$user_id": {
+          ".write": "auth.uid === $user_id",
+          "timekit": {
+            ".write": false
+          }
         }
       },
 
