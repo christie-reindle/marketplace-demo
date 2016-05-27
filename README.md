@@ -9,12 +9,30 @@ Feel free to contribute and comment.
 
 ## Setup your own copy
 1. Clone repo
-2. Edit `/src/services/Settings.js` and to match your settings
-3. Copy the contents of `/firebase-rules.json` into your Firebase app rules
-4. Run `npm install` and `npm run dev` to test
+2. Create a free account and app on Firebase.io
+  - Copy the contents of `/firebase-rules.json` into your Firebase app rules
+  - Create a new user in "Auth" that you want to login with
+  - In "Database", create a new entity with the following structure:
+    ```
+    users: {
+      your-firebase-user-uid: {
+        timekit: {
+          api_token: "your-timekit-api-token",
+          email: "your-timekit-email"
+        }
+      }
+    }
+    ```
+4. Edit `/src/services/Settings.js` and to match your settings
+  - `timekit-app` should be set to your app slug registered on Timekit
+  - `timekit-api-url` should be the API base URL (default will do in most cases)
+  - `firebase-url` can be found in your Firebase dashboard
+5. Run `npm install` and `npm run dev` to compile and start the dev server
+6. Open http://localhost:8080 in your browser
+7. Login with a valid Timekit user
 
 ## Notes
-There’s a few bugs/features like:
+There’s a few known bugs/features like:
 - Not validating forms
 - Not listing spaces by distance
 - Not being able to save connecting existing Timekit user to app

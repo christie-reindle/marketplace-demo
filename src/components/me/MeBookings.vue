@@ -32,7 +32,7 @@
             {{ booking.attributes.event_info.start | moment }} - {{ booking.attributes.event_info.end | moment }}
           </td>
           <td>
-            {{ booking.calendar.display_name }}
+            {{ booking.calendar.name }}
           </td>
           <td>
             <confirm-decline

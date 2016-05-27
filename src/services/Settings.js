@@ -6,6 +6,7 @@ let store = Storage.create({
 
 store.set('timekit-app', 'marketplace-demo')
 store.set('firebase-url', 'https://timekit-rmt.firebaseio.com/')
+store.set('google-maps-key', 'AIzaSyACwmNz_uSpQQTao9KStvrYdDJV7qgRfXA')
 
 if (process.env.NODE_ENV === 'development') {
   store.set('timekit-api-url', 'http://api-localhost.timekit.io/')
