@@ -2,8 +2,16 @@
 
 A quick showcase on how to integrate [Timekit](http://timekit.io) with a booking centered web app.
 
-You are able to create spaces available for bookings and add simple availability rules to them. User can then book these spaces and the creator of them can confirm/decline bookings.
-The booking flow uses the [Booking.js](http://booking.timekit.io) widget.
+You can play around with a hosted version here:  
+[https://marketplace-demo.timekit.io](https://marketplace-demo.timekit.io)
+
+## How it works
+
+As a vendor, you are able to create spaces available for bookings and add simple availability rules to them. Visitors can then book these spaces and the creator of them can confirm/decline bookings.
+
+The booking flow uses the [Booking.js](http://github.com/timekit-io/booking-js) widget.
+
+It uses Firebase for auth and DB, and integrates with Timekit through the [JavaScript SDK](http://github.com/timekit-io/js-sdk)
 
 Feel free to contribute and comment.
 
