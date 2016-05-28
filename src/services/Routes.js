@@ -1,4 +1,5 @@
-import Introduction from '../components/Introduction'
+import Auth from '../services/Auth'
+import About from '../components/About'
 import Search from '../components/Search'
 import SpaceCreate from '../components/space/SpaceCreate'
 import Me from '../components/Me'
@@ -8,9 +9,9 @@ import MeSpacesEdit from '../components/me/MeSpacesEdit'
 
 export default function (router) {
   router.map({
-    '/introduction': {
-      name: 'introduction',
-      component: Introduction,
+    '/about': {
+      name: 'about',
+      component: About,
       layout: 'default'
     },
 
@@ -23,13 +24,15 @@ export default function (router) {
     '/create_space': {
       name: 'create_space',
       component: SpaceCreate,
-      layout: 'default'
+      layout: 'default',
+      auth: true
     },
 
     '/me': {
       name: 'me',
       component: Me,
       layout: 'default',
+      auth: true,
       subRoutes: {
         '/bookings': {
           name: 'me_bookings',
@@ -48,6 +51,14 @@ export default function (router) {
   })
 
   router.redirect({
-    '*': 'introduction'
+    '*': 'search'
+  })
+
+  router.beforeEach(function (transition) {
+    if (transition.to.auth && !Auth.isAuthenticated()) {
+      transition.redirect('/')
+    } else {
+      transition.next()
+    }
   })
 }

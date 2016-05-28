@@ -1,15 +1,18 @@
 <template>
   <div>
+    <github-ribbon></github-ribbon>
     <component :is="layout"></component>
   </div>
 </template>
 
 <script>
 import LayoutDefault from './layout/LayoutDefault'
+import GithubRibbon from './partials/GithubRibbon'
 
 export default {
   components: {
-    LayoutDefault
+    LayoutDefault,
+    GithubRibbon
   },
   computed: {
     layout: function () {

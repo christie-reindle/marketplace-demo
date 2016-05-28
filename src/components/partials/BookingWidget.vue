@@ -44,11 +44,6 @@ export default {
           graph: 'confirm_decline',
           action: 'create',
           where: this.space.location.address
-        },
-        callbacks: {
-          createBookingSuccessful: (response) => {
-            console.log('DONE', response)
-          }
         }
       })
     }

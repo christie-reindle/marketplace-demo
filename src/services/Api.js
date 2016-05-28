@@ -1,10 +1,9 @@
 import Timekit from 'timekit-sdk'
 import Settings from './Settings'
 
-let config = { app: Settings.get('timekit-app') }
-
-if (process.env.NODE_ENV === 'development') {
-  config.apiBaseUrl = 'http://api-localhost.timekit.io/'
+let config = {
+  app: Settings.get('timekit-app'),
+  apiBaseUrl: Settings.get('timekit-api-url')
 }
 
 Timekit.configure(config)

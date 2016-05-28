@@ -3,6 +3,7 @@
 </template>
 <script>
 import GoogleMapsLoader from 'google-maps'
+import Settings from '../../services/Settings'
 
 export default {
   props: {
@@ -15,6 +16,7 @@ export default {
   },
   ready: function () {
     GoogleMapsLoader.LIBRARIES = ['places']
+    GoogleMapsLoader.KEY = Settings.get('google-maps-key')
     GoogleMapsLoader.load(google => {
       let input = document.getElementById(this.id)
       let autocomplete = new google.maps.places.Autocomplete(input)
