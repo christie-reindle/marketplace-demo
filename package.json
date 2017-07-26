@@ -6,8 +6,12 @@
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
-    "build": "rimraf dist && mkdirp dist && ncp static dist/static && cross-env NODE_ENV=production webpack --progress --hide-modules --config build/webpack.prod.conf.js",
-    "test": "karma start build/karma.conf.js --single-run"
+    "build": "rimraf dist && mkdirp dist && ncp static dist/static && cross-env NODE_ENV=production webpack --progress --hide-modules --config build/webpack.prod.conf.js --bail",
+    "test": "karma start build/karma.conf.js --single-run",
+    "release:major": "../flux/flux timekit:release major marketplace-demo",
+    "release:minor": "../flux/flux timekit:release minor marketplace-demo",
+    "release:patch": "../flux/flux timekit:release patch marketplace-demo",
+    "deploy": "../flux/flux timekit:deploy prod marketplace-demo"
   },
   "dependencies": {
     "firebase": "^2.4.1",
