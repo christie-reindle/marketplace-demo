@@ -2,10 +2,15 @@
   "name": "timekit-marketplace-demo",
   "description": "Timekit Marketplace Demo",
   "author": "Henning Horn <hh@timekit.io>",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
-    "build": "rimraf dist && mkdirp dist && ncp static dist/static && cross-env NODE_ENV=production webpack --progress --hide-modules --config build/webpack.prod.conf.js",
+    "build": "rimraf dist && mkdirp dist && ncp static dist/static && cross-env NODE_ENV=production webpack --progress --hide-modules --config build/webpack.prod.conf.js --bail",
+    "release:major": "../flux/flux timekit:release major marketplace-demo",
+    "release:minor": "../flux/flux timekit:release minor marketplace-demo",
+    "release:patch": "../flux/flux timekit:release patch marketplace-demo",
+    "deploy:prod": "../flux/flux timekit:deploy prod marketplace-demo",
     "test": "karma start build/karma.conf.js --single-run"
   },
   "dependencies": {
